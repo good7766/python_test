@@ -1,0 +1,10 @@
+---
+- hosts: web
+  become: yes
+
+  tasks:
+
+  - name: create deploy file
+    copy:
+      content: "Deploy Success"
+      dest: /tmp/deploy.txt
