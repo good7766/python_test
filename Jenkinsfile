@@ -1,24 +1,18 @@
 pipeline {
     agent any
-    
+
+    environment {
+        ANSIBLE_HOST_KEY_CHECKING = 'False'
+    }
+
     stages {
-        stage('Checkout') {
+        stage('Ansible Deploy') {
             steps {
-                echo 'Checking out source code...'
-            }
-        }
-        stage('Build & Test') {
-            steps {
-                echo 'Running Python Script Test...'
-                sh 'python3 app.py'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying to Local Production Directory...'
-                // 로컬의 특정 배포 디렉토리로 복사하는 예시
-                sh 'mkdir -p /tmp/deployed_app'
-                sh 'cp app.py /tmp/deployed_app/'
+                sshagent(credentials: ['ansible-target-ssh']) {
+                    sh '''
+                        ansible-playbook -i hosts deploy.yml
+                    '''
+                }
             }
         }
     }
