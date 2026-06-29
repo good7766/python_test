@@ -7,4 +7,4 @@
   - name: create deploy file
     copy:
       content: "Deploy Success"
-      dest: /tmp/deploy.txt
+      dest: /tmp/deploy2.txt
